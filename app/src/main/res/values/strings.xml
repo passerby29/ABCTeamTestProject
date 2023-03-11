@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ABCTestProject</string>
+    <string name="logo_desc">logo</string>
+    <string name="rules">Whack the moles!\nTap the most moles within 30 seconds and get the maximum score!</string>
 </resources>
