@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import dev.passerby.abctestproject.Constants.moleIdArray
 import dev.passerby.abctestproject.databinding.ActivityGameBinding
 import java.util.*
 
@@ -18,17 +18,6 @@ class GameActivity : AppCompatActivity() {
 
     private var mainCountDownTimer: CountDownTimer? = null
     private val availableMoleIdArrayList: ArrayList<Int> = ArrayList()
-    private var moleIdArray = intArrayOf(
-        R.id.firstMoleBtn,
-        R.id.secondMoleBtn,
-        R.id.thirdMoleBtn,
-        R.id.fourthMoleBtn,
-        R.id.fifthMoleBtn,
-        R.id.sixthMoleBtn,
-        R.id.seventhMoleBtn,
-        R.id.eighthMoleBtn,
-        R.id.ninthMoleBtn
-    )
     private var moleIsActive = false
     private var countDownWorks = false
     private var score = 0
@@ -42,50 +31,16 @@ class GameActivity : AppCompatActivity() {
         startTimer(GAME_TIME * MILLIS_IN_SECONDS)
         binding.scoreTxt.text = score.toString()
         binding.pauseGameBtn.setOnClickListener {
-            rePauseTimer()
+            pauseClickListener()
         }
-    }
-
-    private fun launchResultActivity() {
-        val intent = ResultActivity.newIntent(this, score)
-        startActivity(intent)
     }
 
     private fun fillMolesArrayList(notAvailableMoleId: Int) {
-        for (i in moleIdArray.indices) {
-            availableMoleIdArrayList.add(moleIdArray[i])
-        }
+        availableMoleIdArrayList.addAll(moleIdArray)
         // Removing last mole from list
         if (notAvailableMoleId != 0) {
             availableMoleIdArrayList.remove(notAvailableMoleId)
         }
-    }
-
-    private fun rePauseTimer() {
-        if (countDownWorks) {
-            pauseGame()
-            return
-        }
-        resumeGame()
-    }
-
-    private fun pauseGame() {
-        countDownWorks = false
-        mainCountDownTimer!!.cancel()
-        binding.pauseGameBtn.setImageResource(R.drawable.play_selector)
-    }
-
-    // Resume game
-    private fun resumeGame() {
-        startTimer(leftTime)
-        binding.pauseGameBtn.setImageResource(R.drawable.pause_selector)
-    }
-
-    private fun formatTime(millisUntilFinished: Long): String {
-        val seconds = millisUntilFinished / MILLIS_IN_SECONDS
-        val minutes = seconds / SECONDS_IN_MINUTES
-        val leftSeconds = seconds - minutes * SECONDS_IN_MINUTES
-        return String.format("%02d:%02d", minutes, leftSeconds)
     }
 
     // Start main game timer
@@ -107,33 +62,59 @@ class GameActivity : AppCompatActivity() {
             }.start()
     }
 
+    private fun formatTime(millisUntilFinished: Long): String {
+        val seconds = millisUntilFinished / MILLIS_IN_SECONDS
+        val minutes = seconds / SECONDS_IN_MINUTES
+        val leftSeconds = seconds - minutes * SECONDS_IN_MINUTES
+        return String.format("%02d:%02d", minutes, leftSeconds)
+    }
+
     private fun showMole() {
-        val activeMole = findViewById<ImageButton>(
-            availableMoleIdArrayList[Random().nextInt(availableMoleIdArrayList.size)]
-        )
-        activeMole.setImageResource(R.drawable.mole)
-        activeMole.isEnabled = true
+        val available = availableMoleIdArrayList
+        val activeMole = findViewById<ImageButton>(available[Random().nextInt(available.size)])
+        activeMole.apply {
+            setImageResource(R.drawable.mole)
+            isEnabled = true
+        }
         moleIsActive = true
         val handler = Handler(Looper.getMainLooper())
         val runnable = Runnable {
             availableMoleIdArrayList.clear()
-            fillMolesArrayList(activeMole.id)
-            activeMole.setImageResource(R.drawable.hole)
-            activeMole.isEnabled = false
+            activeMole.apply {
+                fillMolesArrayList(this.id)
+                setImageResource(R.drawable.hole)
+                isEnabled = false
+            }
             moleIsActive = false
         }
         handler.postDelayed(runnable, 500)
-        for (i in moleIdArray.indices) {
-            val imageButton = findViewById<ImageButton>(moleIdArray[i])
-            imageButton.setOnClickListener(View.OnClickListener {
-                if (!imageButton.isEnabled) return@OnClickListener
-                imageButton.setImageResource(R.drawable.hole)
-                binding.scoreTxt.text = "${++score}"
-            })
+        activeMole.setOnClickListener {
+            activeMole.setImageResource(R.drawable.hole)
+            binding.scoreTxt.text = "${++score}"
         }
     }
 
+    private fun launchResultActivity() {
+        val intent = ResultActivity.newIntent(this, score)
+        startActivity(intent)
+    }
 
+    private fun pauseClickListener() {
+        if (countDownWorks) {
+            pauseGame()
+            return
+        }
+        resumeGame()
+    }
+    private fun pauseGame() {
+        countDownWorks = false
+        mainCountDownTimer!!.cancel()
+        binding.pauseGameBtn.setImageResource(R.drawable.play_selector)
+    }
+    private fun resumeGame() {
+        startTimer(leftTime)
+        binding.pauseGameBtn.setImageResource(R.drawable.pause_selector)
+    }
     companion object {
 
         private const val MILLIS_IN_SECONDS = 1000L

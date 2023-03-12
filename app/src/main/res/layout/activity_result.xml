@@ -19,11 +19,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/gameOverTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Game Over"
+        android:text="@string/game_over_title"
         android:textColor="@color/black"
         android:textSize="52sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/scoreTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/gameOverTv"
         tools:text="Score:" />
 
     <com.google.android.material.button.MaterialButton
@@ -55,13 +55,13 @@
         android:backgroundTint="#6D5437"
         android:paddingHorizontal="48dp"
         android:paddingVertical="8dp"
-        android:text="play again"
+        android:text="@string/play_again_btn"
         android:textSize="28sp"
         app:cornerRadius="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/scoreTv"
         app:rippleColor="#0A0908" />
 
     <com.google.android.material.button.MaterialButton
@@ -73,7 +73,7 @@
         android:backgroundTint="#6D5437"
         android:paddingHorizontal="48dp"
         android:paddingVertical="8dp"
-        android:text="menu"
+        android:text="@string/menu_btn"
         android:layout_marginTop="48dp"
         android:textSize="24sp"
         app:cornerRadius="48dp"

@@ -20,7 +20,7 @@ class ResultActivity : AppCompatActivity() {
         setContentView(binding.root)
         preferences = getSharedPreferences("APP_PREFERENCES", MODE_PRIVATE)
         parseIntent()
-        binding.textView3.text = "Score: $score"
+        binding.scoreTv.text = String.format(getString(R.string.result), score)
         binding.startGameBtn.setOnClickListener { launchGame() }
         binding.menuBtn.setOnClickListener { launchMenu() }
     }
@@ -35,7 +35,7 @@ class ResultActivity : AppCompatActivity() {
 
     private fun saveResult() {
         val best = preferences.getInt(KEY_RESULT, 0)
-        if (best < score){
+        if (best < score) {
             val editor = preferences.edit()
             editor.putInt(KEY_RESULT, score)
             editor.apply()

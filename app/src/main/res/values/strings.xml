@@ -3,4 +3,10 @@
     <string name="logo_desc">logo</string>
     <string name="rules">Whack the moles!\nTap the most moles within 30 seconds and get the maximum score!</string>
     <string name="time_ends">00:00</string>
+    <string name="play_btn">play</string>
+    <string name="pause_desc">pause</string>
+    <string name="game_over_title">Game Over</string>
+    <string name="play_again_btn">play again</string>
+    <string name="menu_btn">menu</string>
+    <string name="result">Your result: %s</string>
 </resources>
